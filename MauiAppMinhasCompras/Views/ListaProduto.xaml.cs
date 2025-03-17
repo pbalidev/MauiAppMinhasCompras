@@ -69,10 +69,10 @@ public partial class ListaProduto : ContentPage
     {
         try
         {
-            // Obtém o item de menu que foi clicado
+            
             var menuItem = sender as MenuItem;
 
-            // Obtém o produto associado ao item de menu clicado
+            
             var produto = menuItem?.BindingContext as Produto;
 
             if (produto == null)
@@ -81,18 +81,18 @@ public partial class ListaProduto : ContentPage
                 return;
             }
 
-            // Confirmação do usuário antes de remover
+            
             bool confirmacao = await DisplayAlert("Confirmar Remoção", $"Deseja remover o produto '{produto.Descricao}'?", "Sim", "Não");
 
             if (confirmacao)
             {
-                // Remove o produto do banco de dados
+            
                 await App.Db.Delete(produto.Id);
 
-                // Remove o produto da lista ObservableCollection
+            
                 lista.Remove(produto);
 
-                // Atualiza a lista temporária (_todosProdutos) para manter a consistência
+            
                 _todosProdutos.Remove(produto);
 
                 await DisplayAlert("Sucesso", "Produto removido com sucesso.", "OK");
