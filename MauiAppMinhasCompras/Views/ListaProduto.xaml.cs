@@ -1,6 +1,7 @@
 using MauiAppMinhasCompras.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MauiAppMinhasCompras.Views;
 
@@ -104,4 +105,23 @@ public partial class ListaProduto : ContentPage
         }
     }
 
+    private void lst_produtos_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        try
+        {
+            Produto produto = e.SelectedItem as Produto;
+            if (produto == null)
+            {
+                return;
+            }
+            Navigation.PushAsync(new Views.EditarProduto
+            {
+                BindingContext = produto
+            });
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Erro", ex.Message, "OK");
+        }
+    }
 }
