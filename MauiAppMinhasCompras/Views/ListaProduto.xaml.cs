@@ -70,10 +70,10 @@ public partial class ListaProduto : ContentPage
     {
         try
         {
-            
+
             var menuItem = sender as MenuItem;
 
-            
+
             var produto = menuItem?.BindingContext as Produto;
 
             if (produto == null)
@@ -82,18 +82,18 @@ public partial class ListaProduto : ContentPage
                 return;
             }
 
-            
+
             bool confirmacao = await DisplayAlert("Confirmar Remoção", $"Deseja remover o produto '{produto.Descricao}'?", "Sim", "Não");
 
             if (confirmacao)
             {
-            
+
                 await App.Db.Delete(produto.Id);
 
-            
+
                 lista.Remove(produto);
 
-            
+
                 _todosProdutos.Remove(produto);
 
                 await DisplayAlert("Sucesso", "Produto removido com sucesso.", "OK");
@@ -122,6 +122,26 @@ public partial class ListaProduto : ContentPage
         catch (Exception ex)
         {
             DisplayAlert("Erro", ex.Message, "OK");
+        }
+    }
+
+    private async void lst_produtos_Refreshing(object sender, EventArgs e)
+    {
+        try
+        {
+            lista.Clear();
+            List<Produto> tmp = await App.Db.GetAll();
+            tmp.ForEach(i => lista.Add(i));
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
+        finally
+        {
+            lst_produtos.IsRefreshing = false;
+
         }
     }
 }
